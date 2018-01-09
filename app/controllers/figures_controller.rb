@@ -26,12 +26,11 @@ class FiguresController < Sinatra::Base
     if params[:landmark][:name] != ""
       figure.landmarks << Landmark.create(name: params[:landmark][:name])
     end
-    redirect to '/figures/#{figure.id}'
+    redirect to "figures/#{figure.id}"
   end
 
-  get "/figures/:id" do
-    @figure = Figure.all.find_by(:id params[:id])
-    binding.pry
+  get '/figures/:id' do
+    @figure = Figure.find(params[:id])
     erb :'figures/show'
   end
 end
