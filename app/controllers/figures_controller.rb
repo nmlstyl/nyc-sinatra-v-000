@@ -30,6 +30,8 @@ class FiguresController < Sinatra::Base
   end
 
   get "/figures/:id" do
+    @figure = Figure.all.find_by(:id params[:id])
+    binding.pry
     erb :'figures/show'
   end
 end
