@@ -26,11 +26,34 @@ class FiguresController < Sinatra::Base
     if params[:landmark][:name] != ""
       figure.landmarks << Landmark.create(name: params[:landmark][:name])
     end
+
     redirect to "figures/#{figure.id}"
   end
 
   get '/figures/:id' do
     @figure = Figure.find(params[:id])
     erb :'figures/show'
+  end
+
+  get '/figures/:id/edit' do
+    @figure = Figure.find(params[:id])
+    @titles = Title.all
+    @landmarks = Landmark.all
+    erb :'figures/edit'
+  end
+
+  patch '/figures/:id' do
+    @figure = Figure.find(params[:id])
+    @figure.update(name: params[:figure][:name], title_ids: params[:title_ids], title_ids: params[:landmark_ids])
+
+    if params[:landmark][:name] != ""
+      @figure.landmarks << Landmark.create(name: params[:landmark][:name])
+    end
+
+    if params[:title][:name] != ""
+      @figure.landmarks << Title.create(name: params[:title][:name])
+    end
+
+    redirect to "figures/#{@figure.id}"
   end
 end
